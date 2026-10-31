@@ -1,0 +1,7 @@
+{
+  "name": "quiz-flashcard-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

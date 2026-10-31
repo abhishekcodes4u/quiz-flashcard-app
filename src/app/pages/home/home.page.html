@@ -1,0 +1,132 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar class="transparent-toolbar">
+    <ion-title class="header-title">QuizFlash</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="home-content">
+  <div class="home-wrapper">
+    <!-- Hero / Title Area -->
+    <div class="hero-section">
+      <div class="logo-badge">
+        <ion-icon name="flash" class="hero-icon"></ion-icon>
+      </div>
+      <h1 class="app-title">QuizFlash</h1>
+      <p class="app-subtitle">Test Your Knowledge!</p>
+    </div>
+
+    <!-- Quiz Settings Card -->
+    <ion-card class="settings-card">
+      <ion-card-header>
+        <ion-card-title class="card-title">
+          <ion-icon name="settings-outline" aria-hidden="true"></ion-icon>
+          <span>Quiz Settings</span>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Number of Questions Selector -->
+        <div class="setting-item-block">
+          <div class="setting-item-header">
+            <ion-label class="setting-label">Number of Questions</ion-label>
+            <ion-badge color="primary" class="question-count-badge">
+              {{ numberOfQuestions }} Questions
+            </ion-badge>
+          </div>
+          <ion-item lines="none" class="control-item range-wrapper">
+            <ion-range
+              [min]="5"
+              [max]="50"
+              [step]="5"
+              [snaps]="true"
+              [pin]="true"
+              [(ngModel)]="numberOfQuestions"
+              aria-label="Number of Questions"
+              color="primary"
+            >
+              <ion-label slot="start">5</ion-label>
+              <ion-label slot="end">50</ion-label>
+            </ion-range>
+          </ion-item>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="setting-item-block">
+          <ion-item lines="none" class="control-item select-wrapper">
+            <ion-label position="stacked" class="setting-label">Category</ion-label>
+            <ion-select
+              [(ngModel)]="selectedCategory"
+              placeholder="Select Category"
+              interface="action-sheet"
+              aria-label="Category"
+              cancelText="Cancel"
+            >
+              <ion-select-option [value]="0">Any Category</ion-select-option>
+              <ion-select-option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- Difficulty Dropdown -->
+        <div class="setting-item-block">
+          <ion-item lines="none" class="control-item select-wrapper">
+            <ion-label position="stacked" class="setting-label">Difficulty</ion-label>
+            <ion-select
+              [(ngModel)]="selectedDifficulty"
+              placeholder="Select Difficulty"
+              interface="action-sheet"
+              aria-label="Difficulty"
+              cancelText="Cancel"
+            >
+              <ion-select-option value="">Any Difficulty</ion-select-option>
+              <ion-select-option value="easy">Easy</ion-select-option>
+              <ion-select-option value="medium">Medium</ion-select-option>
+              <ion-select-option value="hard">Hard</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- Big Start Quiz Button -->
+        <ion-button
+          expand="block"
+          size="large"
+          class="start-quiz-button"
+          (click)="startQuiz()"
+        >
+          <ion-icon slot="start" name="play-circle"></ion-icon>
+          Start Quiz
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Secondary Navigation Buttons Grid -->
+    <ion-grid class="secondary-nav-grid">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button
+            expand="block"
+            fill="outline"
+            class="secondary-button flashcard-button"
+            (click)="goToFlashcards()"
+          >
+            <ion-icon slot="start" name="library"></ion-icon>
+            Flashcards
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button
+            expand="block"
+            fill="outline"
+            class="secondary-button highscores-button"
+            (click)="goToHighScores()"
+          >
+            <ion-icon slot="start" name="trophy"></ion-icon>
+            High Scores
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

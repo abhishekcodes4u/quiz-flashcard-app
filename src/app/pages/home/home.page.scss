@@ -1,0 +1,320 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.transparent-toolbar {
+  --background: transparent;
+  --border-width: 0;
+
+  .header-title {
+    color: #ffffff;
+    font-weight: 700;
+    opacity: 0.9;
+    letter-spacing: 0.5px;
+  }
+}
+
+.home-content {
+  --background: linear-gradient(145deg, #3880ff 0%, #5b3ce4 50%, #7044ff 100%);
+  --color: #ffffff;
+}
+
+.home-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 16px 20px 28px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Hero Section */
+.hero-section {
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 22px;
+  animation: fadeInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    margin-bottom: 12px;
+    transform: rotate(-3deg);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: rotate(0deg) scale(1.05);
+    }
+
+    .hero-icon {
+      font-size: 44px;
+      color: #ffd700;
+      filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.7));
+    }
+  }
+
+  .app-title {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .app-subtitle {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.92);
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+}
+
+/* Settings Card */
+.settings-card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  margin: 0 0 18px 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  ion-card-header {
+    padding: 18px 20px 10px;
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      ion-icon {
+        font-size: 1.3rem;
+        color: #3880ff;
+      }
+    }
+  }
+
+  ion-card-content {
+    padding: 10px 18px 22px;
+  }
+}
+
+.setting-item-block {
+  margin-bottom: 14px;
+
+  .setting-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    padding: 0 2px;
+  }
+
+  .setting-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+  }
+
+  .question-count-badge {
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 10px;
+    --background: #3880ff;
+  }
+}
+
+.control-item {
+  --background: #f1f5f9;
+  --border-radius: 14px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+
+  &:hover, &:focus-within {
+    --background: #e2e8f0;
+  }
+
+  &.range-wrapper {
+    padding: 2px 8px;
+
+    ion-range {
+      --bar-background: #cbd5e1;
+      --bar-background-active: #3880ff;
+      --knob-background: #3880ff;
+      --knob-size: 20px;
+      --pin-background: #3880ff;
+      --pin-color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+    }
+  }
+
+  &.select-wrapper {
+    padding: 4px 12px;
+
+    ion-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    ion-select {
+      width: 100%;
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 0.95rem;
+      --placeholder-color: #64748b;
+      --placeholder-opacity: 1;
+    }
+  }
+}
+
+/* Start Quiz Button */
+.start-quiz-button {
+  --background: linear-gradient(135deg, #3880ff 0%, #2f68d6 100%);
+  --border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  height: 54px;
+  margin-top: 18px;
+  margin-bottom: 2px;
+  letter-spacing: 0.3px;
+  animation: pulseButton 2.2s infinite ease-in-out;
+
+  ion-icon {
+    font-size: 1.5rem;
+    margin-right: 6px;
+  }
+}
+
+@keyframes pulseButton {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 6px 18px rgba(56, 128, 255, 0.4);
+  }
+  50% {
+    transform: scale(1.025);
+    box-shadow: 0 10px 28px rgba(56, 128, 255, 0.7);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 6px 18px rgba(56, 128, 255, 0.4);
+  }
+}
+
+/* Secondary Actions Grid */
+.secondary-nav-grid {
+  padding: 0;
+
+  ion-col {
+    padding: 4px;
+  }
+
+  .secondary-button {
+    --border-radius: 14px;
+    --border-width: 2px;
+    height: 48px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 0;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: transform 0.2s ease;
+
+    &:active {
+      transform: scale(0.97);
+    }
+
+    &.flashcard-button {
+      --color: #ffffff;
+      --border-color: rgba(255, 255, 255, 0.8);
+      --background: rgba(255, 255, 255, 0.12);
+
+      &:hover {
+        --background: rgba(255, 255, 255, 0.22);
+      }
+    }
+
+    &.highscores-button {
+      --color: #ffd700;
+      --border-color: rgba(255, 215, 0, 0.85);
+      --background: rgba(255, 215, 0, 0.12);
+
+      &:hover {
+        --background: rgba(255, 215, 0, 0.22);
+      }
+    }
+
+    ion-icon {
+      font-size: 1.25rem;
+      margin-right: 6px;
+    }
+  }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tablet / Desktop Optimization */
+@media (min-width: 576px) {
+  .home-wrapper {
+    padding: 24px 24px 36px;
+  }
+
+  .hero-section {
+    margin-bottom: 28px;
+
+    .logo-badge {
+      width: 84px;
+      height: 84px;
+
+      .hero-icon {
+        font-size: 50px;
+      }
+    }
+
+    .app-title {
+      font-size: 3rem;
+    }
+  }
+}

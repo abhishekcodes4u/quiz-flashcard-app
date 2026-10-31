@@ -1,0 +1,275 @@
+/*
+ * Ionic Angular Core CSS Imports
+ * --------------------------------------------------
+ */
+@import '@ionic/angular/css/core.css';
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+
+/* Optional Ionic CSS utils that can be commented out */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+@import '@ionic/angular/css/display.css';
+
+/*
+ * Modern Typography & Global Defaults
+ * --------------------------------------------------
+ */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--ion-font-family);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', var(--ion-font-family);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/*
+ * Vibrant Quiz Gradient Backgrounds
+ * --------------------------------------------------
+ */
+.quiz-bg-gradient {
+  --background: linear-gradient(145deg, #f7f9fc 0%, #eceef8 100%);
+}
+
+body.dark .quiz-bg-gradient {
+  --background: linear-gradient(145deg, #121620 0%, #171d2b 100%);
+}
+
+.hero-banner-gradient {
+  background: linear-gradient(135deg, #6c5ce7 0%, #8c7ae6 50%, #00cec9 100%);
+  border-radius: 24px;
+  color: #ffffff;
+  padding: 24px 20px;
+  box-shadow: 0 12px 24px -6px rgba(108, 92, 231, 0.35);
+}
+
+/*
+ * Quiz Card & Glassmorphism Styles
+ * --------------------------------------------------
+ */
+.quiz-card {
+  background: var(--ion-card-background);
+  border-radius: var(--quiz-border-radius);
+  box-shadow: var(--quiz-card-shadow);
+  border: var(--quiz-card-border);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px -8px rgba(108, 92, 231, 0.18);
+  }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(108, 92, 231, 0.1);
+}
+
+body.dark .glass-card {
+  background: rgba(30, 36, 51, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/*
+ * Quiz Question & Choice Answer Components
+ * --------------------------------------------------
+ */
+.choice-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  width: 100%;
+  background: var(--ion-card-background);
+  border: 2px solid rgba(108, 92, 231, 0.12);
+  border-radius: 16px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+
+  &:hover:not(.disabled) {
+    border-color: var(--ion-color-primary);
+    transform: translateX(4px);
+    box-shadow: 0 6px 16px rgba(108, 92, 231, 0.15);
+  }
+
+  &.correct {
+    background: rgba(0, 184, 148, 0.12) !important;
+    border-color: var(--ion-color-success) !important;
+    animation: pulseSuccess 0.45s ease-in-out;
+
+    .choice-prefix {
+      background: var(--ion-color-success) !important;
+      color: #ffffff !important;
+    }
+  }
+
+  &.incorrect {
+    background: rgba(225, 112, 85, 0.12) !important;
+    border-color: var(--ion-color-danger) !important;
+    animation: shakeIncorrect 0.4s ease-in-out;
+
+    .choice-prefix {
+      background: var(--ion-color-danger) !important;
+      color: #ffffff !important;
+    }
+  }
+}
+
+.choice-prefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 12px;
+  background: rgba(108, 92, 231, 0.1);
+  color: var(--ion-color-primary);
+  font-weight: 700;
+  font-size: 15px;
+  margin-right: 14px;
+  transition: all 0.2s ease;
+}
+
+.choice-text {
+  flex-grow: 1;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--ion-text-color);
+}
+
+/*
+ * Modern Button Styling
+ * --------------------------------------------------
+ */
+.gradient-btn {
+  --background: var(--quiz-gradient-primary);
+  --box-shadow: 0 8px 20px -4px rgba(108, 92, 231, 0.4);
+  --border-radius: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  height: 52px;
+  margin: 12px 0;
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.gradient-btn-secondary {
+  --background: var(--quiz-gradient-secondary);
+  --box-shadow: 0 8px 20px -4px rgba(0, 206, 201, 0.35);
+  --border-radius: 14px;
+  font-weight: 700;
+  height: 52px;
+}
+
+/*
+ * Flashcard 3D Perspective Helpers
+ * --------------------------------------------------
+ */
+.flip-card-perspective {
+  perspective: 1200px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+
+  &.flipped {
+    transform: rotateY(180deg);
+  }
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 24px;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/*
+ * Keyframe Animations
+ * --------------------------------------------------
+ */
+@keyframes pulseSuccess {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shakeIncorrect {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/*
+ * Progress Bar Styling
+ * --------------------------------------------------
+ */
+ion-progress-bar {
+  height: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  --background: rgba(108, 92, 231, 0.12);
+  --progress-background: var(--quiz-gradient-primary);
+}
+
+/*
+ * Safe Area Support for Mobile Devices
+ * --------------------------------------------------
+ */
+.safe-area-padding {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}

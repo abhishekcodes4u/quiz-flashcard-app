@@ -1,0 +1,292 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.highscores-content {
+  --background: var(--ion-background-color, #f4f6f9);
+}
+
+.highscores-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 16px 36px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Trophy Hero Section */
+.trophy-hero {
+  text-align: center;
+  padding: 12px 8px 18px;
+
+  .trophy-icon-badge {
+    width: 84px;
+    height: 84px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 193, 7, 0.22) 0%, rgba(255, 193, 7, 0.04) 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .animated-trophy {
+      font-size: 3rem;
+      color: #ffc107;
+      animation: trophyGlow 3s ease-in-out infinite;
+    }
+  }
+
+  .leaderboard-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--ion-color-step-900, #1e2022);
+    margin: 0 0 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .leaderboard-subtitle {
+    font-size: 0.9rem;
+    color: var(--ion-color-step-600, #6c757d);
+    margin: 0;
+  }
+}
+
+@keyframes trophyGlow {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    filter: drop-shadow(0 2px 6px rgba(255, 193, 7, 0.3));
+  }
+  50% {
+    transform: translateY(-6px) scale(1.06);
+    filter: drop-shadow(0 8px 14px rgba(255, 193, 7, 0.55));
+  }
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+  background: var(--ion-card-background, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  margin-top: 10px;
+
+  .empty-trophy-wrap {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--ion-color-step-100, #edf2f7);
+    color: var(--ion-color-step-400, #a0aec0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ion-color-step-900, #1e2022);
+    margin: 0 0 8px;
+  }
+
+  p {
+    font-size: 0.92rem;
+    color: var(--ion-color-step-600, #6c757d);
+    max-width: 280px;
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  .start-quiz-btn {
+    font-weight: 700;
+    height: 46px;
+    min-width: 180px;
+    --box-shadow: 0 6px 16px rgba(56, 128, 255, 0.35);
+  }
+}
+
+/* Scores List & Container */
+.scores-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scores-list {
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .score-item {
+    --background: var(--ion-card-background, #ffffff);
+    --border-radius: 16px;
+    --padding-start: 14px;
+    --padding-end: 16px;
+    --inner-padding-top: 14px;
+    --inner-padding-bottom: 14px;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    animation: slideInUp 0.4s ease-out forwards;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:active {
+      transform: scale(0.99);
+    }
+
+    // Rank Badges
+    .rank-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--ion-color-step-100, #edf2f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+
+      .rank-text {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: var(--ion-color-step-700, #4a5568);
+      }
+
+      &.medal-rank {
+        background: transparent;
+        .rank-text {
+          font-size: 1.6rem;
+        }
+      }
+    }
+
+    // Top 3 Podium Colors
+    &.rank-gold {
+      border-left: 5px solid #ffc107;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 193, 7, 0.12) 0%,
+        var(--ion-card-background, #ffffff) 50%
+      );
+    }
+
+    &.rank-silver {
+      border-left: 5px solid #a0aec0;
+      background: linear-gradient(
+        90deg,
+        rgba(160, 174, 192, 0.12) 0%,
+        var(--ion-card-background, #ffffff) 50%
+      );
+    }
+
+    &.rank-bronze {
+      border-left: 5px solid #cd7f32;
+      background: linear-gradient(
+        90deg,
+        rgba(205, 127, 50, 0.12) 0%,
+        var(--ion-card-background, #ffffff) 50%
+      );
+    }
+
+    // Player Information
+    .player-info {
+      margin: 0;
+
+      .player-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 4px;
+
+        .player-name {
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: var(--ion-color-step-900, #1e2022);
+          margin: 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .percentage-badge {
+          font-size: 0.78rem;
+          font-weight: 700;
+          padding: 4px 8px;
+          border-radius: 8px;
+        }
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+        color: var(--ion-color-step-500, #718096);
+
+        .category-chip {
+          background: var(--ion-color-step-100, #edf2f7);
+          padding: 2px 8px;
+          border-radius: 6px;
+          font-weight: 600;
+          max-width: 140px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .date-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+        }
+      }
+    }
+
+    // Score End Slot
+    .score-end-slot {
+      padding-left: 8px;
+
+      .score-ratio {
+        font-size: 1.05rem;
+        color: var(--ion-color-step-600, #718096);
+
+        strong {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: var(--ion-color-primary, #3880ff);
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Clear Scores Button */
+.clear-button-container {
+  padding: 8px 4px 0;
+
+  .clear-scores-btn {
+    font-weight: 600;
+    font-size: 0.95rem;
+    height: 44px;
+    letter-spacing: 0.2px;
+  }
+}

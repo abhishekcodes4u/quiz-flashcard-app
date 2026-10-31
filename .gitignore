@@ -1,0 +1,45 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Angular build outputs and cache
+.angular/
+dist/
+www/
+out-tsc/
+.tmp/
+
+# Capacitor native build artifacts
+android/app/build/
+android/.gradle/
+android/build/
+android/captures/
+android/.idea/
+ios/App/build/
+ios/App/Pods/
+ios/App/App.xcworkspace/xcuserdata/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Editor and IDE files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db

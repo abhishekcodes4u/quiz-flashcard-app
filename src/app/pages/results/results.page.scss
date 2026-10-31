@@ -1,0 +1,294 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.results-content {
+  --background: var(--ion-background-color, #f4f6f9);
+  position: relative;
+  overflow: hidden;
+
+  &.high-score {
+    --background: linear-gradient(180deg, rgba(255, 196, 9, 0.08) 0%, var(--ion-background-color, #f4f6f9) 35%);
+  }
+}
+
+/* Confetti Falling Animation */
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+
+  .confetti-piece {
+    position: absolute;
+    top: -30px;
+    border-radius: 2px;
+    animation-name: confettiFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Results Main Wrapper */
+.results-wrapper {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 20px 16px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Hero Section */
+.celebration-hero {
+  text-align: center;
+  padding: 12px 8px 6px;
+
+  .emoji-container {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.25) 0%, rgba(255, 255, 255, 0) 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .result-emoji {
+      font-size: 4rem;
+      line-height: 1;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+    }
+  }
+
+  .result-heading {
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--ion-color-step-900, #1e2022);
+    margin: 0 0 6px;
+  }
+
+  .performance-subtext {
+    font-size: 0.95rem;
+    color: var(--ion-color-step-600, #6c757d);
+    max-width: 360px;
+    margin: 0 auto;
+    line-height: 1.45;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Circular Score Card */
+.score-card {
+  border-radius: 20px;
+  margin: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  background: var(--ion-card-background, #ffffff);
+
+  .score-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+  }
+
+  .circular-progress-wrap {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    margin-bottom: 16px;
+
+    .progress-ring {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+
+      circle {
+        cx: 80;
+        cy: 80;
+        r: 60;
+      }
+
+      .progress-ring-bg {
+        fill: none;
+        stroke: var(--ion-color-step-100, #edf2f7);
+        stroke-width: 10;
+      }
+
+      .progress-ring-fill {
+        fill: none;
+        stroke-width: 11;
+        stroke-linecap: round;
+        stroke-dasharray: 377; // 2 * pi * 60
+        transition: stroke-dashoffset 1.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+        &.excellent {
+          stroke: #2dd36f;
+        }
+
+        &.great {
+          stroke: #3880ff;
+        }
+
+        &.good {
+          stroke: #ffc409;
+        }
+
+        &.practice {
+          stroke: #eb445a;
+        }
+      }
+    }
+
+    .progress-inner-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .percentage-number {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--ion-color-step-900, #1e2022);
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+
+      .percentage-text {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--ion-color-step-500, #888888);
+        margin-top: 4px;
+      }
+    }
+  }
+
+  .score-details {
+    text-align: center;
+
+    .score-fraction {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--ion-color-step-800, #2d3748);
+      margin: 0 0 8px;
+
+      strong {
+        font-weight: 800;
+        color: var(--ion-color-primary, #3880ff);
+      }
+    }
+
+    .category-pill {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 12px;
+      background: var(--ion-color-step-100, #edf2f7);
+      color: var(--ion-color-step-700, #4a5568);
+    }
+  }
+}
+
+/* Save Card Section */
+.save-card {
+  border-radius: 20px;
+  margin: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.03);
+  background: var(--ion-card-background, #ffffff);
+
+  .save-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ion-color-step-900, #1e2022);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+
+    ion-icon {
+      font-size: 1.35rem;
+    }
+  }
+
+  .save-desc {
+    font-size: 0.88rem;
+    color: var(--ion-color-step-600, #6c757d);
+    margin: 0 0 16px;
+    line-height: 1.4;
+  }
+
+  .name-input-item {
+    --background: var(--ion-color-step-50, #f8f9fa);
+    --border-radius: 12px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .save-btn {
+    font-weight: 700;
+    font-size: 1rem;
+    height: 48px;
+    --box-shadow: 0 6px 18px rgba(56, 128, 255, 0.35);
+  }
+}
+
+/* Actions Group */
+.actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+
+  .secondary-action-btn {
+    font-weight: 700;
+    font-size: 1rem;
+    height: 48px;
+    --box-shadow: 0 4px 12px rgba(82, 96, 255, 0.25);
+  }
+
+  .home-action-btn {
+    font-weight: 600;
+    font-size: 0.95rem;
+    height: 46px;
+  }
+}

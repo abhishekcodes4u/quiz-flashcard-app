@@ -1,0 +1,140 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Quiz Results</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="shareResults()" aria-label="Share results">
+        <ion-icon slot="icon-only" name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="results-content" [class.high-score]="percentage > 80">
+  <!-- Confetti Elements for High Scores (>80%) -->
+  <div class="confetti-container" *ngIf="percentage > 80">
+    <div
+      *ngFor="let piece of confettiPieces"
+      class="confetti-piece"
+      [style.left.%]="piece.left"
+      [style.animation-duration.s]="piece.animDuration"
+      [style.animation-delay.s]="piece.animDelay"
+      [style.width.px]="piece.size"
+      [style.height.px]="piece.size * 1.5"
+      [style.background-color]="piece.color"
+    ></div>
+  </div>
+
+  <div class="results-wrapper">
+    <!-- Celebratory Header Card -->
+    <div class="celebration-hero">
+      <div class="emoji-container">
+        <span class="result-emoji">{{ resultEmoji }}</span>
+      </div>
+      <h1 class="result-heading">{{ resultMessage }}</h1>
+      <p class="performance-subtext">{{ performanceSubtext }}</p>
+    </div>
+
+    <!-- Circular Score Indicator Card -->
+    <ion-card class="score-card">
+      <ion-card-content class="score-card-content">
+        <div class="circular-progress-wrap">
+          <svg class="progress-ring" viewBox="0 0 160 160">
+            <!-- Background circle -->
+            <circle
+              class="progress-ring-bg"
+              cx="80"
+              cy="80"
+              r="60"
+            />
+            <!-- Animated progress stroke -->
+            <circle
+              class="progress-ring-fill"
+              [class.excellent]="percentage > 80"
+              [class.great]="percentage > 60 && percentage <= 80"
+              [class.good]="percentage > 40 && percentage <= 60"
+              [class.practice]="percentage <= 40"
+              cx="80"
+              cy="80"
+              r="60"
+              [style.strokeDashoffset]="strokeDashoffset"
+            />
+          </svg>
+          <div class="progress-inner-label">
+            <span class="percentage-number">{{ percentage }}%</span>
+            <span class="percentage-text">Accuracy</span>
+          </div>
+        </div>
+
+        <!-- Score Breakdown Text -->
+        <div class="score-details">
+          <h2 class="score-fraction">
+            You scored <strong>{{ score }}</strong> out of <strong>{{ total }}</strong>
+          </h2>
+          <span class="category-pill">{{ category }}</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Save Score Input Section -->
+    <ion-card class="save-card">
+      <ion-card-content>
+        <h3 class="save-title">
+          <ion-icon name="trophy-outline" color="warning"></ion-icon>
+          Save to Leaderboard
+        </h3>
+        <p class="save-desc">Enter your name to record this achievement on the high scores list:</p>
+        
+        <ion-item lines="outline" class="name-input-item">
+          <ion-label position="floating">Player Name</ion-label>
+          <ion-input
+            [(ngModel)]="playerName"
+            placeholder="e.g. Master Quizzer"
+            [disabled]="isSaved"
+            autocomplete="name"
+          ></ion-input>
+        </ion-item>
+
+        <ion-button
+          expand="block"
+          color="primary"
+          shape="round"
+          class="save-btn"
+          (click)="saveScore()"
+          [disabled]="isSaved"
+        >
+          <ion-icon slot="start" [name]="isSaved ? 'checkmark-circle-outline' : 'save-outline'"></ion-icon>
+          {{ isSaved ? 'Score Saved!' : 'Save Score' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Action Buttons -->
+    <div class="actions-group">
+      <ion-button
+        expand="block"
+        color="secondary"
+        shape="round"
+        class="secondary-action-btn"
+        (click)="playAgain()"
+      >
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Play Again
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="medium"
+        shape="round"
+        class="home-action-btn"
+        (click)="goHome()"
+      >
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+        Go Home
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

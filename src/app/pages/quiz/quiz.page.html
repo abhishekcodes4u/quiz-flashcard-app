@@ -1,0 +1,136 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="primary" class="quiz-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Quiz</ion-title>
+    <ion-buttons slot="end">
+      <ion-badge *ngIf="!isLoading && questions.length > 0" color="light" class="question-counter-badge">
+        Question {{ currentQuestionIndex + 1 }}/{{ questions.length }}
+      </ion-badge>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Progress Bar -->
+  <ion-progress-bar
+    *ngIf="!isLoading && questions.length > 0"
+    [value]="progress"
+    class="quiz-progress-bar"
+  ></ion-progress-bar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="quiz-content">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p class="loading-label">Preparing your quiz questions...</p>
+  </div>
+
+  <!-- Empty / Error State -->
+  <div *ngIf="!isLoading && questions.length === 0" class="empty-state">
+    <ion-icon name="alert-circle-outline" class="empty-icon"></ion-icon>
+    <h2 class="empty-title">No Questions Available</h2>
+    <p class="empty-message">We couldn't retrieve questions matching your settings.</p>
+    <ion-button fill="solid" color="primary" (click)="router.navigate(['/home'])">
+      Return to Home
+    </ion-button>
+  </div>
+
+  <!-- Active Quiz Screen -->
+  <div *ngIf="!isLoading && currentQuestion" class="quiz-wrapper">
+    <!-- Meta Bar: Category Chip & Countdown Timer Chip -->
+    <div class="quiz-meta-bar">
+      <ion-chip class="category-chip" outline="true">
+        <ion-icon name="help-circle-outline"></ion-icon>
+        <ion-label>{{ currentQuestion.category }}</ion-label>
+      </ion-chip>
+
+      <ion-chip
+        class="timer-chip"
+        [ngClass]="{
+          'timer-warning': timeLeft <= 10 && timeLeft > 5,
+          'timer-danger': timeLeft <= 5
+        }"
+      >
+        <ion-icon name="hourglass-outline"></ion-icon>
+        <ion-label><strong>{{ timeLeft }}s</strong></ion-label>
+      </ion-chip>
+    </div>
+
+    <!-- Question Card -->
+    <ion-card class="question-card">
+      <ion-card-content>
+        <!-- Top Info Header: Difficulty & Current Score -->
+        <div class="question-info-row">
+          <ion-badge
+            [color]="getDifficultyColor(currentQuestion.difficulty)"
+            class="difficulty-badge"
+          >
+            {{ currentQuestion.difficulty | uppercase }}
+          </ion-badge>
+          <span class="score-display">Score: {{ score }}</span>
+        </div>
+
+        <!-- Question Text -->
+        <h2 class="question-prompt">{{ currentQuestion.question }}</h2>
+
+        <!-- Answer Option Buttons -->
+        <div class="answers-list">
+          <ion-button
+            *ngFor="let answer of answers; let i = index"
+            expand="block"
+            size="large"
+            [fill]="getAnswerFill(answer)"
+            [color]="getAnswerColor(answer)"
+            [disabled]="showFeedback"
+            [ngClass]="getAnswerButtonClass(answer)"
+            (click)="selectAnswer(answer)"
+            class="answer-btn"
+          >
+            <span class="option-letter">{{ ['A', 'B', 'C', 'D'][i] || (i + 1) }}</span>
+            <span class="option-text">{{ answer }}</span>
+
+            <ion-icon
+              *ngIf="showFeedback && answer === currentQuestion.correct_answer"
+              slot="end"
+              name="checkmark-circle"
+              class="feedback-icon correct"
+            ></ion-icon>
+
+            <ion-icon
+              *ngIf="showFeedback && answer === selectedAnswer && !isCorrect"
+              slot="end"
+              name="close-circle"
+              class="feedback-icon wrong"
+            ></ion-icon>
+          </ion-button>
+        </div>
+
+        <!-- Timeout Indicator Notice -->
+        <div *ngIf="showFeedback && selectedAnswer === ''" class="timeout-alert">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Time is up! The correct answer is shown above.</span>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<!-- Bottom Footer with Next Question / See Results Button -->
+<ion-footer *ngIf="showFeedback" class="quiz-footer ion-no-border">
+  <ion-toolbar class="footer-toolbar">
+    <ion-button
+      expand="block"
+      size="large"
+      color="primary"
+      class="next-step-btn"
+      (click)="nextQuestion()"
+    >
+      <span>{{ currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'See Results' }}</span>
+      <ion-icon
+        slot="end"
+        [name]="currentQuestionIndex < questions.length - 1 ? 'arrow-forward-outline' : 'trophy-outline'"
+      ></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

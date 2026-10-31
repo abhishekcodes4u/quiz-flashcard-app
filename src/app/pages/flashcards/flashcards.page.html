@@ -1,0 +1,321 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Flashcards</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showAddForm = true" aria-label="Add new card">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Category Filter Chips Bar -->
+  <div class="category-scroll-container">
+    <div class="category-chips">
+      <ion-chip
+        [outline]="selectedCategory !== 'All'"
+        [color]="selectedCategory === 'All' ? 'primary' : 'medium'"
+        (click)="filterByCategory('All')"
+        class="cat-chip"
+      >
+        <ion-icon name="layers-outline"></ion-icon>
+        <ion-label>All</ion-label>
+      </ion-chip>
+      <ion-chip
+        *ngFor="let cat of categories"
+        [outline]="selectedCategory !== cat"
+        [color]="selectedCategory === cat ? 'primary' : 'medium'"
+        (click)="filterByCategory(cat)"
+        class="cat-chip"
+      >
+        <ion-icon name="bookmark-outline"></ion-icon>
+        <ion-label>{{ cat }}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Progress Indicator Bar -->
+  <div class="progress-container">
+    <div class="progress-meta">
+      <span class="learned-label">
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        {{ learnedCount }}/{{ flashcards.length }} learned
+      </span>
+      <span class="learned-percent">
+        {{ (learnedProgress * 100) | number : '1.0-0' }}%
+      </span>
+    </div>
+    <ion-progress-bar
+      [value]="learnedProgress"
+      color="success"
+      class="mini-progress-bar"
+    ></ion-progress-bar>
+  </div>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="flashcards-content">
+  <div class="main-wrapper">
+    <!-- Card Deck Area -->
+    <div *ngIf="filteredCards.length > 0; else emptyState" class="deck-container">
+      
+      <!-- Card Counter & Category Badge -->
+      <div class="counter-row">
+        <ion-badge color="light" class="category-tag">
+          {{ currentCard?.category }}
+        </ion-badge>
+        <span class="card-counter">
+          Card {{ currentIndex + 1 }} of {{ filteredCards.length }}
+        </span>
+        <button
+          class="delete-btn"
+          (click)="deleteCard()"
+          title="Delete current card"
+          aria-label="Delete card"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </button>
+      </div>
+
+      <!-- Swipe / Flip Hint -->
+      <div class="swipe-hints">
+        <span class="hint-arrow"><ion-icon name="chevron-back-outline"></ion-icon></span>
+        <span class="hint-text">
+          <ion-icon name="swap-horizontal-outline"></ion-icon> Swipe to navigate &bull; Tap to flip
+        </span>
+        <span class="hint-arrow"><ion-icon name="chevron-forward-outline"></ion-icon></span>
+      </div>
+
+      <!-- 3D Flippable Flashcard -->
+      <div
+        class="card-viewport"
+        (touchstart)="onTouchStart($event)"
+        (touchend)="onTouchEnd($event)"
+      >
+        <div
+          class="card-scene"
+          [class.flipped]="currentCard?.isFlipped"
+          [class.learned]="currentCard?.isLearned"
+          (click)="flipCard()"
+        >
+          <!-- Front Face (Question) -->
+          <div class="card-face card-front">
+            <div class="card-header-bar">
+              <span class="face-tag question-tag">
+                <ion-icon name="bulb-outline"></ion-icon> QUESTION
+              </span>
+              <ion-badge *ngIf="currentCard?.isLearned" color="success" class="status-badge">
+                <ion-icon name="checkmark-circle"></ion-icon> Learned
+              </ion-badge>
+            </div>
+
+            <div class="card-body">
+              <p class="card-text">{{ currentCard?.question }}</p>
+            </div>
+
+            <div class="card-footer-hint">
+              <ion-icon name="sync-outline"></ion-icon>
+              <span>Tap to reveal answer</span>
+            </div>
+          </div>
+
+          <!-- Back Face (Answer) -->
+          <div class="card-face card-back">
+            <div class="card-header-bar">
+              <span class="face-tag answer-tag">
+                <ion-icon name="sparkles-outline"></ion-icon> ANSWER
+              </span>
+              <ion-badge *ngIf="currentCard?.isLearned" color="success" class="status-badge">
+                <ion-icon name="checkmark-circle"></ion-icon> Learned
+              </ion-badge>
+            </div>
+
+            <div class="card-body">
+              <p class="card-text answer-text">{{ currentCard?.answer }}</p>
+            </div>
+
+            <div class="card-footer-hint">
+              <ion-icon name="sync-outline"></ion-icon>
+              <span>Tap to show question</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Buttons Under Card -->
+      <div class="controls-panel">
+        <ion-button
+          fill="clear"
+          shape="round"
+          size="large"
+          class="nav-btn"
+          (click)="prevCard()"
+          [disabled]="filteredCards.length <= 1"
+          aria-label="Previous flashcard"
+        >
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button
+          fill="outline"
+          shape="round"
+          class="action-btn flip-btn"
+          (click)="flipCard()"
+          aria-label="Flip card"
+        >
+          <ion-icon slot="start" name="sync-outline"></ion-icon>
+          Flip
+        </ion-button>
+
+        <ion-button
+          [fill]="currentCard?.isLearned ? 'solid' : 'outline'"
+          [color]="currentCard?.isLearned ? 'success' : 'medium'"
+          shape="round"
+          class="action-btn learned-btn"
+          (click)="markLearned()"
+          aria-label="Toggle learned status"
+        >
+          <ion-icon
+            slot="start"
+            [name]="currentCard?.isLearned ? 'checkmark-circle' : 'checkmark-circle-outline'"
+          ></ion-icon>
+          {{ currentCard?.isLearned ? 'Learned' : 'Learn' }}
+        </ion-button>
+
+        <ion-button
+          fill="clear"
+          shape="round"
+          size="large"
+          class="nav-btn"
+          (click)="nextCard()"
+          [disabled]="filteredCards.length <= 1"
+          aria-label="Next flashcard"
+        >
+          <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <ng-template #emptyState>
+      <div class="empty-state">
+        <div class="empty-icon-wrap">
+          <ion-icon name="layers-outline"></ion-icon>
+        </div>
+        <h3>No Flashcards Found</h3>
+        <p *ngIf="selectedCategory !== 'All'">
+          There are no cards in the <strong>{{ selectedCategory }}</strong> category.
+        </p>
+        <p *ngIf="selectedCategory === 'All'">
+          Your flashcard collection is empty.
+        </p>
+        <div class="empty-actions">
+          <ion-button *ngIf="selectedCategory !== 'All'" fill="outline" (click)="filterByCategory('All')">
+            Show All Cards
+          </ion-button>
+          <ion-button (click)="showAddForm = true">
+            <ion-icon slot="start" name="add"></ion-icon>
+            Create Flashcard
+          </ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Floating Action Button to Add Card -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="fab-pulse">
+    <ion-fab-button color="primary" (click)="showAddForm = true" aria-label="Add new flashcard">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Add Flashcard Modal Form -->
+  <ion-modal [isOpen]="showAddForm" (didDismiss)="showAddForm = false" [initialBreakpoint]="0.85" [breakpoints]="[0, 0.85, 1.0]">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="light">
+          <ion-title>New Flashcard</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="showAddForm = false">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="modal-form-content ion-padding">
+        <form (ngSubmit)="addCard()" class="add-card-form">
+          <ion-item lines="inset" class="form-item">
+            <ion-label position="stacked">Question / Prompt *</ion-label>
+            <ion-textarea
+              [(ngModel)]="newQuestion"
+              name="newQuestion"
+              placeholder="e.g. What is the powerhouse of the cell?"
+              [autoGrow]="true"
+              rows="3"
+              required
+            ></ion-textarea>
+          </ion-item>
+
+          <ion-item lines="inset" class="form-item">
+            <ion-label position="stacked">Answer *</ion-label>
+            <ion-textarea
+              [(ngModel)]="newAnswer"
+              name="newAnswer"
+              placeholder="e.g. Mitochondria"
+              [autoGrow]="true"
+              rows="3"
+              required
+            ></ion-textarea>
+          </ion-item>
+
+          <ion-item lines="inset" class="form-item">
+            <ion-label position="stacked">Category</ion-label>
+            <ion-input
+              [(ngModel)]="newCategory"
+              name="newCategory"
+              placeholder="e.g. Science, History, General Knowledge"
+            ></ion-input>
+          </ion-item>
+
+          <div class="category-suggestions" *ngIf="categories.length > 0">
+            <span class="suggestion-label">Or pick an existing category:</span>
+            <div class="chips-row">
+              <ion-chip
+                *ngFor="let cat of categories"
+                outline
+                color="secondary"
+                (click)="newCategory = cat"
+              >
+                {{ cat }}
+              </ion-chip>
+            </div>
+          </div>
+
+          <div class="modal-buttons ion-padding-top">
+            <ion-button
+              expand="block"
+              type="submit"
+              color="primary"
+              shape="round"
+              [disabled]="!newQuestion.trim() || !newAnswer.trim()"
+            >
+              <ion-icon slot="start" name="add"></ion-icon>
+              Save Flashcard
+            </ion-button>
+            <ion-button
+              expand="block"
+              fill="clear"
+              color="medium"
+              (click)="showAddForm = false"
+            >
+              Cancel
+            </ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

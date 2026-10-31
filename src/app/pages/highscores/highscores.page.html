@@ -1,0 +1,105 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>High Scores</ion-title>
+    <ion-buttons slot="end" *ngIf="highScores.length > 0">
+      <ion-button color="light" (click)="clearScores()" aria-label="Clear all scores">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="highscores-content">
+  <div class="highscores-wrapper">
+    <!-- Trophy Hero Header Area -->
+    <div class="trophy-hero">
+      <div class="trophy-icon-badge">
+        <ion-icon name="trophy-outline" class="animated-trophy"></ion-icon>
+      </div>
+      <h1 class="leaderboard-title">Hall of Fame</h1>
+      <p class="leaderboard-subtitle">Top quiz champions and record holders</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="highScores.length === 0" class="empty-state">
+      <div class="empty-trophy-wrap">
+        <ion-icon name="trophy-outline"></ion-icon>
+      </div>
+      <h3>No Scores Yet</h3>
+      <p>Take a quiz to see your name up here on the leaderboard!</p>
+      <ion-button
+        color="primary"
+        shape="round"
+        class="start-quiz-btn"
+        (click)="goHome()"
+      >
+        <ion-icon slot="start" name="play-outline"></ion-icon>
+        Start Quiz
+      </ion-button>
+    </div>
+
+    <!-- High Scores List -->
+    <div *ngIf="highScores.length > 0" class="scores-container">
+      <ion-list lines="none" class="scores-list">
+        <ion-item
+          *ngFor="let item of highScores; let i = index"
+          class="score-item"
+          [class.rank-gold]="i === 0"
+          [class.rank-silver]="i === 1"
+          [class.rank-bronze]="i === 2"
+        >
+          <!-- Rank Slot -->
+          <div slot="start" class="rank-badge" [class.medal-rank]="i < 3">
+            <span class="rank-text">{{ getRankIcon(i) }}</span>
+          </div>
+
+          <!-- Main Info -->
+          <ion-label class="player-info">
+            <div class="player-row">
+              <h2 class="player-name">{{ item.name }}</h2>
+              <ion-badge
+                [color]="i === 0 ? 'warning' : i === 1 ? 'medium' : i === 2 ? 'tertiary' : 'light'"
+                class="percentage-badge"
+              >
+                {{ getPercentage(item) }}%
+              </ion-badge>
+            </div>
+
+            <div class="meta-row">
+              <span class="category-chip">{{ item.category || 'General' }}</span>
+              <span class="date-chip">
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ formatDate(item.date) }}
+              </span>
+            </div>
+          </ion-label>
+
+          <!-- Score Slot -->
+          <div slot="end" class="score-end-slot">
+            <span class="score-ratio">
+              <strong>{{ item.score }}</strong> / {{ item.total }}
+            </span>
+          </div>
+        </ion-item>
+      </ion-list>
+
+      <!-- Clear All Scores Button -->
+      <div class="clear-button-container">
+        <ion-button
+          expand="block"
+          color="danger"
+          fill="outline"
+          shape="round"
+          class="clear-scores-btn"
+          (click)="clearScores()"
+        >
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          Clear High Scores
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
